@@ -41,4 +41,14 @@ describe('Controller: PostsController', function(){
         expect(scope.post.title).toBe('');
         expect(scope.post.url).toBe('http://');
     });
+
+    it('should delete post', function(){
+        scope.post.title = 'some title';
+        scope.post.url = 'ya.ru';
+        scope.submitPost();
+
+        scope.deletePost(0);
+
+        expect(scope.posts.length).toBe(0);
+    });
 });
