@@ -1,14 +1,16 @@
-app.controller('PostCtrl', function($scope, Post){
-    $scope.posts = Post.get();
+'use strict';
+app.controller('PostCtrl', function($scope, postService){
+    $scope.posts = postService.get();
     $scope.post = {url:'http://', title:''};
 
     $scope.submitPost = function(){
-        Post.save($scope.post);
-        $scope.post = {url:'http://', title:''};
+        postService.save($scope.post, function(ref){
+            $scope.posts[ref.name] = $scope.post;
+            $scope.post = {url:'http://', title:''};
+        });
     };
 
-    $scope.deletePost = function(index)
-    {
+    $scope.deletePost = function(index){
         $scope.posts.splice(index, 1);
     }
 });
