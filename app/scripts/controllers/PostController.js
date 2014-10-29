@@ -10,7 +10,9 @@ app.controller('PostCtrl', function($scope, postService){
         });
     };
 
-    $scope.deletePost = function(index){
-        $scope.posts.splice(index, 1);
-    }
+    $scope.deletePost = function(postId){
+        postService.delete({id:postId}).$promise.then(function(){
+            delete $scope.posts[postId];
+        });
+    };
 });

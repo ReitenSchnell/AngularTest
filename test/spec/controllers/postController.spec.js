@@ -20,7 +20,7 @@ describe('Controller: postController', function(){
         scope = $rootScope.$new();
         spyOn(postServiceMock, 'get').andCallThrough();
         deferredSuccess = $q.defer();
-        spyOn(postServiceMock, 'save').andReturn(deferredSuccess.promise);
+        spyOn(postServiceMock, 'save').andReturn(deferredSuccess);
         PostCtrl = $controller('PostCtrl', {
             $scope:scope,
             postService:postServiceMock
