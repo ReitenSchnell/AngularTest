@@ -5,8 +5,6 @@ app.controller('PostCtrl', function($scope, postService){
 
     $scope.submitPost = function(){
         postService.save($scope.post).then(function(ref){
-            console.log($scope.posts);
-            console.log(ref);
             $scope.posts[ref.name] = $scope.post;
             $scope.post = {url:'http://', title:''};
         });

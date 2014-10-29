@@ -1,5 +1,5 @@
 'use strict';
-describe('postService', function()
+describe('Service: postService', function()
 {
     beforeEach(module('angularTestApp'));
 

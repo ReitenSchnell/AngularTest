@@ -1,5 +1,5 @@
 'use strict';
-describe('Controller: PostsController', function(){
+describe('Controller: postController', function(){
 
     var PostCtrl, scope, postService, deferredSuccess;
 
