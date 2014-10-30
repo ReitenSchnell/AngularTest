@@ -15,7 +15,8 @@ var app = angular
     'ngResource',
     'ngRoute',
     'ngSanitize',
-    'ngTouch'
+    'ngTouch',
+    'firebase'
   ]);
   app.config(function ($routeProvider) {
     $routeProvider
@@ -24,3 +25,4 @@ var app = angular
         controller: 'PostCtrl'
       });
   });
+  app.constant('FIREBASE_URL', 'https://blistering-heat-2420.firebaseio.com/');

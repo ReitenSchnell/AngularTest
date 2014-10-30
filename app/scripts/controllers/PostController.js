@@ -1,18 +1,15 @@
 'use strict';
 app.controller('PostCtrl', function($scope, postService){
-    $scope.posts = postService.get();
+    $scope.posts = postService.all;
     $scope.post = {url:'http://', title:''};
 
     $scope.submitPost = function(){
-        postService.save($scope.post).$promise.then(function(ref){
-            $scope.posts[ref.name] = $scope.post;
+        postService.create($scope.post).then(function(ref){
             $scope.post = {url:'http://', title:''};
         });
     };
 
-    $scope.deletePost = function(postId){
-        postService.delete({id:postId}).$promise.then(function(){
-            delete $scope.posts[postId];
-        });
+    $scope.deletePost = function(post){
+        postService.delete(post);
     };
 });
