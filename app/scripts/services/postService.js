@@ -4,7 +4,9 @@ app.factory('postService', function($firebase, FIREBASE_URL){
     var posts = $firebase(ref.child('posts')).$asArray();
 
     var postService = {
-        all : posts,
+        all : function(){
+            return posts;
+        },
         create: function(post){
             return posts.$add(post);
         },

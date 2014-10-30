@@ -1,16 +1,16 @@
 'use strict';
 describe('Controller: postController', function(){
 
-    var PostCtrl, scope, postService, deferredSuccess;
-
+    var PostCtrl, scope, deferredSuccess;
     var testPosts = {
         "key1" : {url:'url1', title:'title1'},
         "key2" : {url:'url2', title:'title2'}};
 
     var postServiceMock =
     {
-        get : function(){  return testPosts; },
-        save : function(){ }
+        all : function(){  return testPosts; },
+        delete: function(post) {},
+        create : function(post){}
     };
     var saveResponse = {name:'key3'};
 
@@ -18,9 +18,10 @@ describe('Controller: postController', function(){
 
     beforeEach(inject(function($controller, $rootScope, $q){
         scope = $rootScope.$new();
-        spyOn(postServiceMock, 'get').andCallThrough();
         deferredSuccess = $q.defer();
-        spyOn(postServiceMock, 'save').andReturn(deferredSuccess);
+        spyOn(postServiceMock, 'all').andCallThrough();
+        spyOn(postServiceMock, 'delete').andCallThrough();
+        spyOn(postServiceMock, 'create').andCallThrough().andReturn(deferredSuccess.promise);
         PostCtrl = $controller('PostCtrl', {
             $scope:scope,
             postService:postServiceMock
@@ -36,25 +37,14 @@ describe('Controller: postController', function(){
         expect(scope.post.url).toBe('http://')
     });
 
-    it('should add post to array on submit', function(){
-        var title = 'some title';
-        scope.post.title = title;
-        var url = 'ya.ru';
-        scope.post.url = url;
-        deferredSuccess.resolve(saveResponse);
-        var initialPostCount = Object.keys(testPosts).length;
-
+    it('should call create', function(){
         scope.submitPost();
-
-        scope.$apply();
-        expect(scope.posts[saveResponse.name].title).toBe(title);
-        expect(scope.posts[saveResponse.name].url).toBe(url);
-        expect(Object.keys(scope.posts).length).toBe(initialPostCount + 1);
+        expect(postServiceMock.create).toHaveBeenCalledWith(scope.post);
     });
 
     it('should clear post on submit', function(){
         scope.post.title = 'some title';
-        scope.post.url = 'ya.ru';
+        scope.post.url = 'some url';
         deferredSuccess.resolve(saveResponse);
 
         scope.submitPost();
@@ -64,10 +54,8 @@ describe('Controller: postController', function(){
         expect(scope.post.url).toBe('http://');
     });
 
-//    it('should delete post', function(){
-//        var initialPostCount = Object.keys(testPosts).length;
-//        scope.deletePost(0);
-//
-//        expect(Object.keys(scope.posts).length).toBe(initialPostCount - 1);
-//    });
+    it('should delete post', function(){
+        scope.deletePost(scope.post);
+        expect(postServiceMock.delete).toHaveBeenCalledWith(scope.post);
+    });
 });
