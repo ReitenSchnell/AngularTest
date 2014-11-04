@@ -23,6 +23,14 @@ var app = angular
       .when('/', {
         templateUrl: 'views/posts.html',
         controller: 'PostCtrl'
-      });
+      })
+    .when('/posts/:postId', {
+        templateUrl: 'views/post.html',
+        controller: 'PostDetailsCtrl'
+    })
+    .otherwise({
+        redirectTo:'/'
+    })
+
   });
   app.constant('FIREBASE_URL', 'https://blistering-heat-2420.firebaseio.com/');
