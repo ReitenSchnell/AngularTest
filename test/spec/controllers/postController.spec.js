@@ -1,7 +1,7 @@
 'use strict';
 describe('Controller: PostCtrl', function(){
 
-    var PostCtrl, scope, deferredSuccess;
+    var PostCtrl, scope, deferredSuccess, location;
     var testPosts = {
         "key1" : {url:'url1', title:'title1'},
         "key2" : {url:'url2', title:'title2'}};
@@ -12,16 +12,18 @@ describe('Controller: PostCtrl', function(){
         delete: function(post) {},
         create : function(post){}
     };
-    var saveResponse = {name:'key3'};
+    var saveResponse = {name:function(){return 'key3'}};
 
     beforeEach(module('angularTestApp'));
 
-    beforeEach(inject(function($controller, $rootScope, $q){
+    beforeEach(inject(function($controller, $rootScope, $q, $location){
         scope = $rootScope.$new();
         deferredSuccess = $q.defer();
+        location = $location;
         spyOn(postServiceMock, 'all').andCallThrough();
         spyOn(postServiceMock, 'delete').andCallThrough();
         spyOn(postServiceMock, 'create').andCallThrough().andReturn(deferredSuccess.promise);
+        spyOn(location, 'path').andCallThrough();
         PostCtrl = $controller('PostCtrl', {
             $scope:scope,
             postService:postServiceMock
@@ -57,5 +59,12 @@ describe('Controller: PostCtrl', function(){
     it('should delete post', function(){
         scope.deletePost(scope.post);
         expect(postServiceMock.delete).toHaveBeenCalledWith(scope.post);
+    });
+
+    it('should redirect to post comments after create', function(){
+        deferredSuccess.resolve(saveResponse);
+        scope.submitPost();
+        scope.$apply();
+        expect(location.path).toHaveBeenCalledWith('/posts/key3');
     });
 });
