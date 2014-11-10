@@ -39,32 +39,8 @@ describe('Controller: PostCtrl', function(){
         expect(scope.post.url).toBe('http://')
     });
 
-    it('should call create', function(){
-        scope.submitPost();
-        expect(postServiceMock.create).toHaveBeenCalledWith(scope.post);
-    });
-
-    it('should clear post on submit', function(){
-        scope.post.title = 'some title';
-        scope.post.url = 'some url';
-        deferredSuccess.resolve(saveResponse);
-
-        scope.submitPost();
-
-        scope.$apply();
-        expect(scope.post.title).toBe('');
-        expect(scope.post.url).toBe('http://');
-    });
-
     it('should delete post', function(){
         scope.deletePost(scope.post);
         expect(postServiceMock.delete).toHaveBeenCalledWith(scope.post);
-    });
-
-    it('should redirect to post comments after create', function(){
-        deferredSuccess.resolve(saveResponse);
-        scope.submitPost();
-        scope.$apply();
-        expect(location.path).toHaveBeenCalledWith('/posts/key3');
     });
 });

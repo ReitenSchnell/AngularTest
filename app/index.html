@@ -21,21 +21,8 @@
     <![endif]-->
 
     <!-- Add your site or application content here -->
-    <div class="container">
-      <div class="header">
-        <ul class="nav nav-pills pull-right">
-          <li class="active"><a ng-href="#">Home</a></li>
-          <li><a ng-href="#/about">About</a></li>
-          <li><a ng-href="#">Contact</a></li>
-        </ul>
-        <h3 class="text-muted">angularTest</h3>
-      </div>
-
-      <div ng-view=""></div>
-
-      <div class="footer">
-      </div>
-    </div>
+     <div ng-include="'views/nav.html'"></div>
+     <div ng-view=""></div>
 
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
@@ -78,7 +65,9 @@
         <script src="scripts/app.js"></script>
         <script src="scripts/controllers/postController.js"></script>
         <script src="scripts/controllers/postDetailsController.js"></script>
+        <script src="scripts/controllers/navigationController.js"></script>
         <script src="scripts/services/postService.js"></script>
+        <script src="scripts/filters/hostnameFilter.js"></script>
         <!-- endbuild -->
 </body>
 </html>
