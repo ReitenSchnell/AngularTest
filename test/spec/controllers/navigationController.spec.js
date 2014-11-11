@@ -1,12 +1,17 @@
 'use strict';
 
 describe('Controller:NavCtrl', function(){
-
     var NavCtrl, scope, deferredSuccess, location;
 
     var postServiceMock =
     {
         create : function(post){}
+    };
+
+    var authServiceMock =
+    {
+        logout : function(){},
+        signedIn : function(){}
     };
 
     var saveResponse = {name:function(){return 'key3'}};
@@ -17,9 +22,12 @@ describe('Controller:NavCtrl', function(){
         location = $location;
         spyOn(postServiceMock, 'create').andCallThrough().andReturn(deferredSuccess.promise);
         spyOn(location, 'path').andCallThrough();
+        spyOn(authServiceMock, 'logout').andCallThrough();
+        spyOn(authServiceMock, 'signedIn').andCallThrough();
         NavCtrl = $controller('NavCtrl', {
             $scope:scope,
-            postService:postServiceMock
+            postService:postServiceMock,
+            authService:authServiceMock
         });
     }));
 
@@ -51,4 +59,14 @@ describe('Controller:NavCtrl', function(){
         scope.$apply();
         expect(location.path).toHaveBeenCalledWith('/posts/key3');
     });
+
+    it('should call auth service logout', function(){
+        scope.logout();
+        expect(authServiceMock.logout).toHaveBeenCalled();
+    });
+
+    it('should call auth service signedIn', function(){
+        scope.signedIn();
+        expect(authServiceMock.signedIn).toHaveBeenCalled();
+    })
 });

@@ -28,7 +28,7 @@ var app = angular
         templateUrl: 'views/post.html',
         controller: 'PostDetailsCtrl'
     })
-    .when('register', {
+    .when('/register', {
          templateUrl:'views/register.html',
          controller: 'AuthCtrl',
          resolve: {
@@ -36,6 +36,15 @@ var app = angular
                  return authService.resolveUser()
              }
          }
+    })
+    .when('/login', {
+        templateUrl:'views/login.html',
+        controller: 'AuthCtrl',
+        resolve: {
+            user:function(authService){
+                return authService.resolveUser()
+            }
+        }
     })
     .otherwise({
         redirectTo:'/'
