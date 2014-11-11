@@ -63,6 +63,20 @@ describe('Controller:AuthCtrl', function(){
             expect(location.path).toHaveBeenCalledWith('/');
         });
 
+        it('should not call service log in when register returned error', function(){
+            deferredSuccess.reject({});
+            scope.register();
+            scope.$apply();
+            expect(authServiceMock.login.callCount).toBe(0);
+        });
+
+        it('should save error when register unsuccessful', function(){
+            var reason = "some error";
+            deferredSuccess.reject(reason);
+            scope.register();
+            scope.$apply();
+            expect(scope.error).toBe(reason);
+        })
     });
 
     describe ('user login', function(){
@@ -91,6 +105,21 @@ describe('Controller:AuthCtrl', function(){
             scope.login();
             scope.$apply();
             expect(location.path).toHaveBeenCalledWith('/');
+        });
+
+        it('should not redirect to home page on unsuccessful login', function(){
+            deferredSuccess.reject({});
+            scope.login();
+            scope.$apply();
+            expect(location.path.callCount).toBe(0);
+        });
+
+        it('should save error when register unsuccessful', function(){
+            var reason = "some error";
+            deferredSuccess.reject(reason);
+            scope.login();
+            scope.$apply();
+            expect(scope.error).toBe(reason);
         })
     });
 });
