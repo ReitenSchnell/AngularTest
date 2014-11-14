@@ -8,10 +8,13 @@ describe('Controller:NavCtrl', function(){
         create : function(post){}
     };
 
+    var testUser = {name:'some name'};
+
     var authServiceMock =
     {
         logout : function(){},
-        signedIn : function(){}
+        signedIn : function(){},
+        currentUser: testUser
     };
 
     var saveResponse = {name:function(){return 'key3'}};
@@ -68,5 +71,9 @@ describe('Controller:NavCtrl', function(){
     it('should call auth service signedIn', function(){
         scope.signedIn();
         expect(authServiceMock.signedIn).toHaveBeenCalled();
+    });
+
+    it('should bind auth service currentUser to user', function(){
+        expect(scope.user).toBe(testUser);
     })
 });

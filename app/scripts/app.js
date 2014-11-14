@@ -32,7 +32,7 @@ var app = angular
          templateUrl:'views/register.html',
          controller: 'AuthCtrl',
          resolve: {
-             user:function(authService){
+             authorizedUser:function(authService){
                  return authService.resolveUser()
              }
          }
@@ -41,7 +41,7 @@ var app = angular
         templateUrl:'views/login.html',
         controller: 'AuthCtrl',
         resolve: {
-            user:function(authService){
+            authorizedUser:function(authService){
                 return authService.resolveUser()
             }
         }

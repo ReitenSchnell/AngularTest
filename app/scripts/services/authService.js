@@ -1,5 +1,5 @@
 'use strict';
-app.factory('authService', function($firebaseSimpleLogin, FIREBASE_URL, $rootScope){
+app.factory('authService', function($firebaseSimpleLogin, FIREBASE_URL, $rootScope, $firebase){
     var ref = new Firebase(FIREBASE_URL);
     var auth = $firebaseSimpleLogin(ref);
 
@@ -17,19 +17,29 @@ app.factory('authService', function($firebaseSimpleLogin, FIREBASE_URL, $rootSco
             return auth.$getCurrentUser();
         },
         signedIn : function(){
-            return !!authService.user.provider;
+            return !!authService.currentUser.provider;
         },
-        user : {}
+        createProfile : function(user) {
+            var profile = {
+                username: user.username,
+                md5_hash: user.md5_hash
+            };
+            var profileRef = $firebase(ref.child('profile'));
+            return profileRef.$set(user.uid, profile)
+        },
+        currentUser : {}
     };
 
-    $rootScope.$on('$firebaseSimpleLogin:login', function(e, user){
-        console.log('logged in');
-        angular.copy(user, authService.user);
+    $rootScope.$on('$firebaseSimpleLogin:login', function(e, firebaseUser){
+        angular.copy(firebaseUser, authService.currentUser);
+        authService.currentUser.profile = $firebase(ref.child('profile').child(authService.currentUser.uid)).$asObject();
     });
 
     $rootScope.$on('$firebaseSimpleLogin:logout', function(){
-        console.log('logged out');
-        angular.copy({}, authService.user);
+        if(authService.currentUser && authService.currentUser.profile){
+            authService.currentUser.profile.$destroy();
+        }
+        angular.copy({}, authService.currentUser);
     });
 
     return authService;

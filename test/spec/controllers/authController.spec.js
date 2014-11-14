@@ -3,9 +3,11 @@ describe('Controller:AuthCtrl', function(){
     var authCtrl, scope, deferredSuccess, location;
     var authServiceMock = {
         register : function(){},
-        login : function(){}
+        login : function(){},
+        createProfile : function(){}
     };
-    var testUser = {};
+    var testUser = {username : 'some user'};
+    var userResponse = {userName : 'response user'};
 
     beforeEach(module('angularTestApp'));
 
@@ -17,7 +19,7 @@ describe('Controller:AuthCtrl', function(){
             authCtrl = $controller('AuthCtrl', {
                 $scope: scope,
                 authService: authServiceMock,
-                user: testUser
+                authorizedUser: testUser
             });
         }));
 
@@ -34,10 +36,11 @@ describe('Controller:AuthCtrl', function(){
             spyOn(location, 'path').andCallThrough();
             spyOn(authServiceMock, 'register').andCallThrough().andReturn(deferredSuccess.promise);
             spyOn(authServiceMock, 'login').andCallThrough().andReturn(deferredSuccess.promise);
+            spyOn(authServiceMock, 'createProfile').andCallThrough().andReturn(deferredSuccess.promise);
             authCtrl = $controller('AuthCtrl', {
                 $scope: scope,
                 authService: authServiceMock,
-                user: null
+                authorizedUser: null
             });
         }));
 
@@ -49,15 +52,23 @@ describe('Controller:AuthCtrl', function(){
 
         it('should call service login when registering user', function(){
             scope.user = testUser;
-            deferredSuccess.resolve();
+            deferredSuccess.resolve(userResponse);
             scope.register();
             scope.$apply();
             expect(authServiceMock.login).toHaveBeenCalledWith(testUser);
         });
 
+        it('should createProfile when user logged in after registering', function(){
+            scope.user = testUser;
+            deferredSuccess.resolve(userResponse);
+            scope.register();
+            scope.$apply();
+            expect(authServiceMock.createProfile).toHaveBeenCalledWith(userResponse);
+        });
+
         it('should redirect to home page when registered user logged in', function(){
             scope.user = testUser;
-            deferredSuccess.resolve();
+            deferredSuccess.resolve(userResponse);
             scope.register();
             scope.$apply();
             expect(location.path).toHaveBeenCalledWith('/');
@@ -68,6 +79,13 @@ describe('Controller:AuthCtrl', function(){
             scope.register();
             scope.$apply();
             expect(authServiceMock.login.callCount).toBe(0);
+        });
+
+        it('should not call create profile when register returned error', function(){
+            deferredSuccess.reject({});
+            scope.register();
+            scope.$apply();
+            expect(authServiceMock.createProfile.callCount).toBe(0);
         });
 
         it('should save error when register unsuccessful', function(){
@@ -89,7 +107,7 @@ describe('Controller:AuthCtrl', function(){
             authCtrl = $controller('AuthCtrl', {
                 $scope: scope,
                 authService: authServiceMock,
-                user: null
+                authorizedUser: null
             });
         }));
 

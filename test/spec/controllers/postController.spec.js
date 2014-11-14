@@ -12,7 +12,6 @@ describe('Controller: PostCtrl', function(){
         delete: function(post) {},
         create : function(post){}
     };
-    var saveResponse = {name:function(){return 'key3'}};
 
     beforeEach(module('angularTestApp'));
 
