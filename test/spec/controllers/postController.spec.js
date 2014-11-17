@@ -13,6 +13,11 @@ describe('Controller: PostCtrl', function(){
         create : function(post){}
     };
 
+    var authServiceMock =
+    {
+        currentUser : {uid:'some id'}
+    };
+
     beforeEach(module('angularTestApp'));
 
     beforeEach(inject(function($controller, $rootScope, $q, $location){
@@ -25,7 +30,8 @@ describe('Controller: PostCtrl', function(){
         spyOn(location, 'path').andCallThrough();
         PostCtrl = $controller('PostCtrl', {
             $scope:scope,
-            postService:postServiceMock
+            postService:postServiceMock,
+            authService:authServiceMock
         });
     }));
 
@@ -42,4 +48,8 @@ describe('Controller: PostCtrl', function(){
         scope.deletePost(scope.post);
         expect(postServiceMock.delete).toHaveBeenCalledWith(scope.post);
     });
+
+    it('should assign user to authorized one', function(){
+        expect(scope.user).toBe(authServiceMock.currentUser);
+    })
 });

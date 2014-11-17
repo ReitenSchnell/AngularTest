@@ -8,7 +8,7 @@ describe('Controller:NavCtrl', function(){
         create : function(post){}
     };
 
-    var testUser = {name:'some name'};
+    var testUser = {uid:'some id', profile:{username:"some name"}};
 
     var authServiceMock =
     {
@@ -42,6 +42,16 @@ describe('Controller:NavCtrl', function(){
     it('should call create', function(){
         scope.submitPost();
         expect(postServiceMock.create).toHaveBeenCalledWith(scope.post);
+    });
+
+    it('should assign user name to post before create', function(){
+        scope.submitPost();
+        expect(scope.post.creator).toBe(testUser.profile.username);
+    });
+
+    it('should assign user id to post before create', function(){
+        scope.submitPost();
+        expect(scope.post.creatorId).toBe(testUser.uid);
     });
 
     it('should clear post on submit', function(){

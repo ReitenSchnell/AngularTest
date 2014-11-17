@@ -10,10 +10,10 @@
             </div>
         </div>
         <div>
-            <span>submitted by<a ng-href="#/users/{{post.creatorID}}">{{post.creator}}</a></span>
+            <span>submitted by <a ng-href="#/users/{{post.creatorId}}">{{post.creator}}</a></span>
             &mdash;
             <a ng-href="#/posts/{{ post.$id }}">comments</a>
-            <a ng-click="deletePost(post)">delete</a>
+            <a ng-show="user.uid == post.creatorId" ng-click="deletePost(post)">delete</a>
         </div>
     </div>
 </div>
