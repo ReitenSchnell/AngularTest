@@ -1,0 +1,10 @@
+{
+  "firebase": "blistering-heat-2420",
+  "public": "dist",
+  "ignore": [
+    "firebase.json",
+    "**/.*",
+    "**/node_modules/**"
+  ],
+  "rules": "security-rules.json"
+}
