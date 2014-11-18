@@ -21,7 +21,10 @@
         <div class="col-md-12">
             <p>{{comment.text}}</p>
             <p class="author">posted by
-                <a href="#/users/{{comment.creatorId}}">{{comment.creator}}</a>
+                <a ng-href="#/users/{{comment.creatorId}}">{{comment.creator}}</a>
+                <a ng-href="" ng-click="removeComment(comment)" ng-show="signedIn() && comment.creatorId === user.Id">
+                    (delete)
+                </a>
             </p>
         </div>
     </div>

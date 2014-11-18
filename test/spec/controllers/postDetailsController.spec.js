@@ -5,7 +5,8 @@ describe('Controller: PostDetailsCtrl', function(){
    var testPost = {title:"title", url:"url"};
 
    var commentsMock = {
-       $add : function () {}
+       $add : function () {},
+       $remove : function() {}
    };
 
    var postServiceMock = {
@@ -29,6 +30,7 @@ describe('Controller: PostDetailsCtrl', function(){
         spyOn(postServiceMock, 'get').andReturn(testPost);
         spyOn(postServiceMock, 'comments').andReturn(commentsMock);
         spyOn(commentsMock, '$add');
+        spyOn(commentsMock, '$remove');
         spyOn(authServiceMock, 'signedIn');
 
         PostDetailsCtrl = $controller('PostDetailsCtrl', {
@@ -84,6 +86,12 @@ describe('Controller: PostDetailsCtrl', function(){
             scope.commentText = 'some text';
             scope.addComment();
             expect(scope.commentText).toBe('')
+        });
+
+        it('should remove comment', function(){
+            var comment = {text:'some text'};
+            scope.removeComment(comment);
+            expect(scope.comments.$remove).toHaveBeenCalledWith(comment);
         })
     })
 });

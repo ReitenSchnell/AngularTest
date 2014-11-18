@@ -16,5 +16,9 @@ app.controller('PostDetailsCtrl', function($scope, $routeParams, postService, au
        };
        $scope.comments.$add(comment);
        $scope.commentText = ''
+   };
+
+   $scope.removeComment = function(comment){
+       $scope.comments.$remove(comment)
    }
 });
