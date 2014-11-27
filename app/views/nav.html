@@ -6,7 +6,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="#">ng-news</a>
+        <a class="navbar-brand" id="home-link" href="#">ng-news</a>
     </div>
     <div ng-controller="NavCtrl" class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <form class="navbar-form navbar-left" role="search" ng-submit="submitPost()" ng-show="signedIn()">
@@ -28,10 +28,10 @@
                 </a>
             </li>
             <li ng-show="signedIn()">
-                <a ng-href="#" ng-click="logout()">Logout</a>
+                <a ng-href="#" id="logout-link" ng-click="logout()">Logout</a>
             </li>
             <li ng-hide="signedIn()">
-                <a ng-href="#/login">Log In</a>
+                <a id="login-link" ng-href="#/login">Log In</a>
             </li>
             <li ng-hide="signedIn()">
                 <a ng-href="#/register">Register</a>

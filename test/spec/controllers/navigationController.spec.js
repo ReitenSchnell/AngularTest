@@ -66,13 +66,6 @@ describe('Controller:NavCtrl', function(){
         expect(scope.post.url).toBe('http://');
     });
 
-    it('should redirect to post comments after create', function(){
-        deferredSuccess.resolve(saveResponse);
-        scope.submitPost();
-        scope.$apply();
-        expect(location.path).toHaveBeenCalledWith('/posts/key3');
-    });
-
     it('should call auth service logout', function(){
         scope.logout();
         expect(authServiceMock.logout).toHaveBeenCalled();

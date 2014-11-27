@@ -12,7 +12,7 @@
         <div>
             <span>submitted by <a ng-href="#/users/{{post.creatorId}}">{{post.creator}}</a></span>
             &mdash;
-            <a ng-href="#/posts/{{ post.$id }}">comments</a>
+            <a ng-href="#/posts/{{ post.$id }}" id="comment-link">comments</a>
             <a ng-show="user.uid == post.creatorId" ng-click="deletePost(post)">delete</a>
         </div>
     </div>

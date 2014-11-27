@@ -10,7 +10,6 @@ app.controller('NavCtrl', function($scope, $location, postService, authService){
         $scope.post.creatorId = $scope.user.uid;
         postService.create($scope.post).then(function(ref){
             $scope.post = {url:'http://', title:''};
-            $location.path('/posts/'+ref.name());
         });
     };
 });
